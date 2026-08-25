@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quyen — Graphic + UX Designer</title>
+<!--
+  ==========================================================================
+  Quyen — portfolio (single file).
+
+  FOLDER STRUCTURE
+    portfolio/
+      index.html
+      images/
+        unibank/     note/     moondrawer/     noswimming/
+
+  ADDING OR SWAPPING AN IMAGE
+    Every image is a plain <img> tag, e.g.
+        <img class="shot" src="images/note/candle-set.jpg" alt="...">
+    Change the src to whatever the file is called. JPG, JPEG, PNG all fine —
+    the extension in the code must match the file exactly (lowercase).
+
+  RESUME
+    The nav "resume" link points to assets/resume.pdf
+
+  ACCESSIBILITY (AODA / WCAG AA): the pink is only ever a band behind dark
+  text, greys pass 4.5:1, focus outline is dark.
+  ==========================================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F0F7; --paper-2:#EAE7F2; --white:#FFFFFF;
+    --ink:#1B1730; --soft:#4A4463; --muted:#6B6486;
+    --berry:#B03A6E; --violet:#5B32C4;
+    --line:rgba(27,23,48,.10); --line-2:rgba(27,23,48,.18);
+    --g1:#5B32C4; --g2:#B03A6E; --g3:var(--g2);
+    --sans:"Poppins",system-ui,sans-serif;
+    --wrap:1160px; --col:780px; --pad:clamp(1.25rem,5vw,3rem); --sec:clamp(3.25rem,6.5vw,5rem);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--soft);font-family:var(--sans);font-size:1.02rem;line-height:1.72;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--berry);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding-inline:var(--pad)}
+  p{max-width:62ch}
+  :focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:2px}
+  b,strong{color:var(--ink);font-weight:600}
+
+  .label{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .lead{font-size:clamp(1.1rem,1.7vw,1.35rem);line-height:1.62;color:var(--soft);font-weight:300}
+  .mk{color:var(--berry);font-weight:500}
+
+  /* nav */
+  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--paper) 85%,transparent);backdrop-filter:blur(12px) saturate(140%);border-bottom:1px solid var(--line)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1rem}
+  .brand{font-weight:700;font-size:1.05rem;color:var(--ink);letter-spacing:.02em;display:inline-flex;align-items:center;gap:.5rem}
+  .brand::after{content:"";width:1.5rem;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--g1),var(--g2))}
+  nav.menu{display:flex;gap:clamp(1rem,3vw,2.2rem)}
+  nav.menu a{font-size:.74rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);position:relative;padding-block:.2rem}
+  nav.menu a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,var(--violet),var(--berry));transition:width .3s ease}
+  nav.menu a:hover::after,nav.menu a:focus-visible::after{width:100%}
+
+  /* views */
+  .view{display:none}
+  .view.is-active{display:block;animation:fade .45s ease both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  /* hero */
+  .intro{position:relative;padding-block:clamp(3.25rem,8.5vw,6rem) clamp(2rem,4vw,3rem)}
+  .intro::before{content:"";position:absolute;z-index:-1;left:-12%;top:-28%;width:70vw;height:70vw;max-width:840px;max-height:840px;background:radial-gradient(circle at 34% 36%, rgba(91,50,196,.20), transparent 62%),radial-gradient(circle at 66% 62%, rgba(176,58,110,.16), transparent 60%);filter:blur(60px);border-radius:50%}
+  .intro .label{display:block;animation:rise .6s .05s both}
+  .intro h1{font-weight:700;font-size:clamp(2.25rem,6.2vw,4.4rem);line-height:.98;letter-spacing:-.035em;color:var(--ink);margin:1.1rem 0 .45rem;animation:rise .75s .15s both}
+  .intro .pron{font-size:.85rem;font-weight:400;font-style:italic;color:var(--muted);margin-bottom:1.9rem;animation:rise .75s .24s both}
+  .intro .lead{max-width:47ch;animation:rise .75s .34s both}
+  .intro .lead+p{margin-top:1.3rem;max-width:47ch;animation:rise .75s .46s both}
+
+  /* work index */
+  .work{padding-block:clamp(.5rem,2vw,1.25rem) 0}
+  .work-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;border-top:1px solid var(--line-2);padding-top:1rem;margin-bottom:0}
+  .work-head h2{font-weight:600;font-size:.95rem;letter-spacing:.01em;color:var(--ink)}
+  .row{display:grid;gap:1.4rem;padding-block:clamp(1.7rem,3.2vw,2.4rem);border-bottom:1px solid var(--line);color:inherit}
+  .row:first-of-type{padding-top:clamp(1.35rem,2.6vw,1.8rem)}
+  @media(min-width:860px){
+    .row{grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(2.5rem,6vw,5rem)}
+    .row.flip .row-vis{order:-1}
+  }
+  .row-vis{position:relative;border-radius:6px;overflow:hidden;background:var(--white);box-shadow:0 1px 2px rgba(27,23,48,.05);transition:box-shadow .45s ease}
+  a.row:hover .row-vis{box-shadow:0 22px 46px -26px rgba(27,23,48,.45)}
+  .row-vis::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,var(--g1),var(--g3));opacity:0;transition:opacity .45s ease;mix-blend-mode:multiply;pointer-events:none}
+  a.row:hover .row-vis::before{opacity:.18}
+  .row-vis img{width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+  a.row:hover .row-vis img{transform:scale(1.04)}
+  .row-bar{width:2.6rem;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--g1),var(--g2),var(--g3));transition:width .45s cubic-bezier(.2,.7,.3,1)}
+  a.row:hover .row-bar{width:5.5rem}
+  .row-meta{display:flex;align-items:center;gap:.85rem;margin-bottom:1rem}
+  .row h3{font-weight:700;font-size:clamp(1.45rem,3vw,2.15rem);line-height:1.02;letter-spacing:-.03em;color:var(--ink);margin-bottom:.7rem;transition:transform .4s cubic-bezier(.2,.7,.3,1)}
+  a.row:hover h3{transform:translateX(6px)}
+  .row p{max-width:40ch;font-size:1rem;line-height:1.65}
+  .row-go{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.1rem;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .3s,gap .3s}
+  a.row:hover .row-go{color:var(--berry);gap:.9rem}
+
+  /* contact */
+  .contact{padding-block:clamp(2.6rem,5vw,3.75rem) clamp(2.25rem,4vw,3rem);position:relative}
+  .contact::before{content:"";position:absolute;z-index:-1;right:-16%;top:-18%;width:60vw;height:60vw;max-width:700px;max-height:700px;background:radial-gradient(circle,rgba(176,58,110,.14),transparent 62%);filter:blur(70px);border-radius:50%}
+  .contact .label{display:block;margin-bottom:1.2rem;font-size:.66rem}
+  .contact h2{font-weight:600;font-size:clamp(1.3rem,2.6vw,1.85rem);line-height:1.2;letter-spacing:-.02em;color:var(--ink);max-width:24ch;margin-bottom:1rem}
+  .contact p{margin-bottom:1.8rem;max-width:52ch;font-size:.94rem;line-height:1.68}
+  .mail{display:inline-block;font-weight:600;font-size:clamp(.95rem,1.6vw,1.15rem);color:var(--ink);letter-spacing:-.005em;background-image:linear-gradient(90deg,var(--violet),var(--berry));background-repeat:no-repeat;background-position:0 100%;background-size:100% 2px;padding-bottom:.3rem;transition:background-size .35s ease}
+  .mail:hover,.mail:focus-visible{background-size:100% 100%;background-image:linear-gradient(90deg,rgba(91,50,196,.16),rgba(176,58,110,.16))}
+  .clinks{display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:1.5rem}
+  .clinks a{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:color .3s,border-color .3s}
+  .clinks a:hover{color:var(--berry);border-color:var(--berry)}
+  .foot{font-size:.66rem;font-weight:400;letter-spacing:.1em;color:var(--muted);margin-top:2.6rem;border-top:1px solid var(--line);padding-top:1.3rem}
+
+  /* ---------- case study: centred column ---------- */
+  .backlink{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:2.2rem;transition:color .3s,gap .3s}
+  .backlink:hover{color:var(--berry);gap:.8rem}
+  .cs-hero{position:relative;max-width:var(--col);margin:0 auto;padding-block:clamp(2.2rem,5vw,3.4rem) clamp(1.6rem,3vw,2.2rem)}
+  .cs-hero::before{content:"";position:absolute;z-index:-1;left:-20%;top:-45%;width:80vw;height:60vw;max-width:960px;max-height:620px;background:radial-gradient(circle at 30% 45%, var(--g1), transparent 60%),radial-gradient(circle at 70% 55%, var(--g3), transparent 58%);opacity:.16;filter:blur(80px);border-radius:50%}
+  .cs-hero .label{display:block;margin-bottom:1.1rem}
+  .cs-hero h1{font-weight:700;font-size:clamp(1.95rem,4.6vw,3.2rem);line-height:1;letter-spacing:-.035em;color:var(--ink);margin-bottom:1.2rem}
+  .cs-hero .lead{max-width:54ch}
+  .cs-hero .lead+p{margin-top:1rem;max-width:56ch}
+  .view > .wrap > .backlink{display:block;max-width:var(--col);margin-inline:auto}
+  .view > .wrap > figure.fig{max-width:var(--col);margin:1.8rem auto 0}
+
+  .meta{display:grid;grid-template-columns:9rem 1fr;gap:0;border-top:1px solid var(--line-2);margin-top:2.4rem}
+  .meta dt{font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:1rem 1.6rem 1rem 0;border-bottom:1px solid var(--line)}
+  .meta dd{margin:0;font-size:.98rem;line-height:1.6;padding:1rem 0;border-bottom:1px solid var(--line)}
+  .meta dd b{color:var(--ink);font-weight:600}
+  .meta dd .note{display:block;color:var(--muted);font-size:.93rem;margin-top:.25rem}
+  .meta dd a{color:var(--berry);border-bottom:1px solid rgba(176,58,110,.35);word-break:break-word}
+  .meta dd a:hover{border-color:var(--berry)}
+  @media(max-width:640px){
+    .meta{grid-template-columns:1fr;border-top:0}
+    .meta dt{padding:1.1rem 0 .15rem;border-bottom:0}
+    .meta dd{padding:0 0 1rem;border-bottom:1px solid var(--line)}
+  }
+
+  .cs-body{max-width:var(--col);margin:0 auto;padding-bottom:3rem;font-size:1rem;line-height:1.75}
+  /* text spans the same width as the photos in the column, not a narrower measure */
+  .cs-hero .lead,.cs-hero .lead+p,
+  .cs-body p,.cs-body ul.rich,.cs-body ol.steps,.cs-body dl.feats,
+  .cs-body figure.fig figcaption{max-width:none}
+  .block{padding-block:clamp(2.4rem,4.5vw,3.4rem)}
+  .block+.block{border-top:1px solid var(--line)}
+  .block > :first-child{margin-top:0}
+  .block > .sub2:first-of-type{margin-top:1.6rem}
+  .block > figure.fig:last-child,.block > .img-row:last-child{margin-bottom:0}
+  .block .label{display:inline-flex;align-items:center;gap:.7rem}
+  .block .label::before{content:"";width:1.5rem;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--g1),var(--g2))}
+  .block .subhead{font-weight:600;font-size:clamp(1.18rem,2vw,1.5rem);line-height:1.18;letter-spacing:-.02em;color:var(--ink);margin:.7rem 0 1.1rem;max-width:26ch}
+  .block p+p{margin-top:.95rem}
+  .sub2{font-weight:600;font-size:1.02rem;letter-spacing:-.005em;color:var(--ink);margin:2.1rem 0 .55rem}
+  .sub3{font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--berry);margin:2rem 0 .7rem}
+
+  ul.rich{list-style:none;margin:1.1rem 0;max-width:62ch}
+  ul.rich li{position:relative;padding-left:1.4rem;margin:.55rem 0}
+  ul.rich li::before{content:"";position:absolute;left:0;top:.78em;width:.5rem;height:.5rem;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2))}
+  ol.steps{list-style:none;counter-reset:s;margin:1.1rem 0;max-width:62ch}
+  ol.steps li{counter-increment:s;position:relative;padding-left:2.3rem;margin:.85rem 0}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.15em;font-size:.72rem;font-weight:600;letter-spacing:.05em;color:var(--berry)}
+
+  dl.feats{margin:1.1rem 0;max-width:62ch}
+  dl.feats dt{font-weight:600;font-size:1rem;letter-spacing:-.005em;color:var(--ink);margin-top:1.25rem}
+  dl.feats dd{margin:.2rem 0 0}
+
+  /* ---------- pain-point table ---------- */
+  .pain-grid{display:grid;gap:1.1rem;margin:1.6rem 0 .4rem}
+  @media(min-width:720px){.pain-grid{grid-template-columns:1fr 1fr;gap:1.3rem}}
+  .pain-col{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:1.3rem 1.35rem 1.5rem}
+  .pain-col h4{display:flex;align-items:center;gap:.6rem;font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-bottom:.9rem;margin-bottom:.4rem;border-bottom:1px solid var(--line)}
+  .pain-col h4::before{content:"";width:1.1rem;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--g1),var(--g2))}
+  .pain{padding:.95rem 0;border-bottom:1px dashed var(--line)}
+  .pain:last-child{border-bottom:0;padding-bottom:0}
+  .pain b{display:block;font-size:.97rem;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:.25rem}
+  .pain p{font-size:.93rem;line-height:1.6;color:var(--muted);max-width:none}
+
+  /* ---------- character comparison table ---------- */
+  .chars{display:grid;gap:1rem;margin:1.5rem 0}
+  @media(min-width:640px){.chars{grid-template-columns:1fr 1fr;gap:1.1rem}}
+  .char{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:1.2rem 1.3rem 1.35rem}
+  .char h4{font-size:1rem;font-weight:600;color:var(--ink);letter-spacing:-.005em;margin-bottom:.15rem}
+  .char .role{display:block;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--berry);margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--line)}
+  .char dl{margin:0}
+  .char dt{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:.75rem}
+  .char dd{margin:.15rem 0 0;font-size:.9rem;line-height:1.55}
+
+  /* ---------- production flowchart ---------- */
+  .cycle{display:grid;gap:.6rem;margin:1.5rem 0}
+  @media(min-width:560px){.cycle{grid-template-columns:1fr 1fr}}
+  @media(min-width:820px){.cycle{grid-template-columns:repeat(3,1fr)}}
+  .cyc{position:relative;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:.85rem .95rem 1rem;border-left:3px solid transparent;border-image:linear-gradient(180deg,var(--g1),var(--g2)) 1}
+  .cyc span{display:block;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--berry);margin-bottom:.3rem}
+  .cyc b{display:block;font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+  .cyc p{font-size:.87rem;line-height:1.5;color:var(--muted);max-width:none}
+  .cycle-note{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--muted);margin-top:.3rem}
+  .cycle-note::before{content:"";width:1.2rem;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--g1),var(--g2));flex:none}
+
+  /* ---------- journey diagram (stage rows, sits in the centred column) ---------- */
+  .flow{margin:1.4rem 0 .5rem}
+  .flow-key{display:flex;flex-wrap:wrap;gap:1.2rem;margin-bottom:.9rem}
+  .flow-key span{display:inline-flex;align-items:center;gap:.45rem;font-size:.64rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .flow-key i{width:.8rem;height:.8rem;border-radius:3px;display:inline-block}
+  .flow-key i.k-now{border:1px dashed var(--line-2);background:transparent}
+  .flow-key i.k-new{background:linear-gradient(135deg,var(--g1),var(--g2))}
+  .jrow{display:grid;gap:.55rem;padding:.9rem 0;border-top:1px solid var(--line)}
+  .jrow:last-child{border-bottom:1px solid var(--line)}
+  @media(min-width:720px){.jrow{grid-template-columns:7rem 1fr;gap:1.1rem;align-items:start}}
+  .jstage{display:flex;align-items:center;gap:.45rem;font-size:.64rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);padding-top:.5rem}
+  .jstage i{width:1.3rem;height:1.3rem;flex:none;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-size:.58rem;font-weight:600;letter-spacing:0;font-style:normal;display:flex;align-items:center;justify-content:center}
+  .jcards{display:grid;gap:.55rem}
+  @media(min-width:560px){.jcards{grid-template-columns:1fr 1fr}}
+  .fbox{border-radius:7px;padding:.7rem .85rem;font-size:.85rem;line-height:1.5}
+  .fbox.now{border:1px dashed var(--line-2);background:transparent;color:var(--muted)}
+  .fbox.new{background:var(--white);border:1px solid var(--line);border-left:3px solid transparent;border-image:linear-gradient(180deg,var(--g1),var(--g2)) 1;color:var(--soft)}
+  .fbox ul{list-style:none}
+  .fbox li{position:relative;padding-left:.78rem;margin:.26rem 0}
+  .fbox li::before{content:"";position:absolute;left:0;top:.6em;width:.26rem;height:.26rem;border-radius:50%;background:currentColor;opacity:.55}
+
+  figure.fig{margin:1.6rem 0}
+  figure.fig figcaption{font-style:italic;font-size:.9rem;color:var(--muted);margin-top:.65rem;max-width:56ch}
+
+  .ph{border:1px dashed var(--line-2);background:var(--white);color:var(--muted);font-size:.72rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;text-align:center;padding:1.4rem;border-radius:6px;min-height:150px;line-height:1.6}
+  .ph b{color:var(--soft);font-weight:600;letter-spacing:.04em}
+  .ph code{font-family:ui-monospace,monospace;font-size:.67rem;color:var(--muted);background:var(--paper-2);padding:.2rem .5rem;border-radius:3px;word-break:break-all}
+  .ph.wide{aspect-ratio:16/7}
+  .ph.sq{aspect-ratio:1/1}
+  .shot{border-radius:6px;width:100%}
+  /* No Swimming: smaller photos, kept proportionate to the paragraph column */
+  #noswimming .shot{max-width:72%;margin-inline:auto}
+  #noswimming .img-row{max-width:72%;margin-inline:auto}
+  #noswimming .img-row .shot{max-width:100%}
+  #noswimming .fig-portrait .shot{max-width:42%}
+  #noswimming > .wrap > figure.fig .shot{max-width:100%}
+  video.shot{width:100%;height:auto;display:block;background:var(--paper-2)}
+  .grouphead{display:flex;align-items:center;gap:.7rem;font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin:2.8rem 0 1.4rem;padding-top:1.1rem;border-top:1px solid var(--line-2)}
+  .grouphead::before{content:"";width:1.4rem;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--g1),var(--g2))}
+  .img-row{display:grid;gap:.9rem;grid-template-columns:repeat(2,1fr);margin:1.6rem 0;align-items:start}
+  .img-row img{width:100%}
+  @media(min-width:640px){.img-row.three{grid-template-columns:repeat(3,1fr)}}
+  .ph-row{display:grid;gap:1rem;grid-template-columns:repeat(2,1fr)}
+  @media(min-width:760px){.ph-row.three{grid-template-columns:repeat(3,1fr)}}
+
+  .rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+  .rv.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap topbar">
+    <a class="brand" href="#home" data-link>Q</a>
+    <nav class="menu" aria-label="Primary">
+      <a href="#work" data-link>work</a>
+      <a href="#contact" data-link>contact</a>
+      <a href="assets/resume.pdf">resume</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================ HOME ============================ -->
+  <section class="view" id="home" aria-label="Home">
+    <div class="wrap intro">
+      <span class="label">Graphic + UX Designer · Toronto</span>
+      <h1>Hi! I&#8217;m Quyen</h1>
+      <p class="pron">( sounds like &#8220;Quinn&#8221;! )</p>
+      <p class="lead">I&#8217;m a designer with a background in <span class="mk">graphic design</span> and a growing focus on <span class="mk">UX/UI</span>. I enjoy turning ideas into designs that feel thoughtful and visually engaging.</p>
+      <p>Outside of design, I&#8217;m always up for crafting something. I love exploring materials, picking up new making techniques, and bringing playful ideas to life!</p>
+    </div>
+
+    <div class="wrap work" id="work">
+      <div class="work-head">
+        <h2>Selected work</h2>
+        <span class="label">Four projects</span>
+      </div>
+
+      <a class="row rv" href="#unibank" data-link style="--g1:#6D3AE0;--g2:#9D7BFF;--g3:#C9B6FF">
+        <div class="row-text">
+          <div class="row-meta"><span class="row-bar"></span><span class="label">UX · Product design</span></div>
+          <h3>UniBank</h3>
+          <p>A dual-sided banking concept for the families traditional banking treats as edge cases: an app that adapts to each household, and software that helps advisors serve them.</p>
+          <span class="row-go">Read the case study →</span>
+        </div>
+        <div class="row-vis"><img src="images/unibank/1.jpg" alt="UniBank app screens" loading="lazy"></div>
+      </a>
+
+      <a class="row flip rv" href="#note" data-link style="--g1:#8ABF4D;--g2:#FF8A50;--g3:#E86FA8">
+        <div class="row-text">
+          <div class="row-meta"><span class="row-bar"></span><span class="label">Branding · Packaging</span></div>
+          <h3>NOTE — The Scent Lab</h3>
+          <p>A rebrand rooted in place, turning Vietnam&#8217;s cities and seasons into a language of scent and color across identity, packaging, and collateral.</p>
+          <span class="row-go">Read the case study →</span>
+        </div>
+        <div class="row-vis"><img src="images/note/1.jpg" alt="NOTE — The Scent Lab" loading="lazy"></div>
+      </a>
+
+      <a class="row rv" href="#moondrawer" data-link style="--g1:#F2A65A;--g2:#B77FD0;--g3:#7E63C9">
+        <div class="row-text">
+          <div class="row-meta"><span class="row-bar"></span><span class="label">Narrative design · AR</span></div>
+          <h3>The Moon Drawer</h3>
+          <p>A 100-episode location-based story built into a live AR game, where collecting a trophy becomes a moment in a story rather than a point on a scoreboard.</p>
+          <span class="row-go">Read the case study →</span>
+        </div>
+        <div class="row-vis"><img src="images/moondrawer/2.jpg" alt="The Moon Drawer key art" loading="lazy"></div>
+      </a>
+
+      <a class="row flip rv" href="#noswimming" data-link style="--g1:#4EC3DE;--g2:#8FE0D2;--g3:#FFD79A">
+        <div class="row-text">
+          <div class="row-meta"><span class="row-bar"></span><span class="label">School project · Fabrication</span></div>
+          <h3>No Swimming</h3>
+          <p>A swimming pool in a box, built to learn six machines I had never touched. Wood, metal, foam, acrylic, a 3D print, and one whale tail that shouldn&#8217;t be there.</p>
+          <span class="row-go">See how it was made →</span>
+        </div>
+        <div class="row-vis"><img src="images/noswimming/0.jpg" alt="No Swimming, finished piece" loading="lazy"></div>
+      </a>
+    </div>
+
+    <div class="wrap contact" id="contact">
+      <span class="label">Contact</span>
+      <h2>If you&#8217;d like to work together or just say hello, feel free to reach out.</h2>
+      <p>I&#8217;m open to design and UX opportunities where I can think through systems and craft thoughtful visuals. Email is the easiest way to reach me.</p>
+      <a class="mail" href="mailto:thcquynn.ngn@gmail.com">thcquynn.ngn@gmail.com</a>
+      <div class="clinks">
+        <a href="https://www.linkedin.com/in/thuc-quyen-nguyen" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <p class="foot">© 2026 Quyen · Toronto</p>
+    </div>
+  </section>
+
+  <!-- ========================== UNIBANK ========================== -->
+  <section class="view" id="unibank" aria-label="UniBank case study" style="--g1:#6D3AE0;--g2:#9D7BFF;--g3:#C9B6FF">
+    <div class="wrap">
+      <a class="backlink sweep" href="#work" data-link>← Selected work</a>
+      <header class="cs-hero">
+        <span class="label">Case study · UX / Product</span>
+        <h1>UniBank</h1>
+        <p class="lead">A dual-sided banking concept built to help institutions serve the families that traditional banking treats as edge cases.</p>
+        <p style="margin-top:.9rem;color:var(--soft)">UniBank is a hyper-personalized banking system that adapts to how a household actually works, with a consumer app for families and a software platform for the advisors who serve them.</p>
+        <dl class="meta">
+          <dt>Role</dt>
+          <dd><b>User Flows &amp; Consumer App UI</b><span class="note">Research, ideation, and direction were shared across the team of 3. I led the initial user flows and designed the consumer app UI.</span></dd>
+          <dt>Length</dt><dd>15 weeks</dd>
+          <dt>Tools</dt><dd>Figma</dd>
+          <dt>Scope</dt><dd>User research, user flows, UI design, design system, prototyping</dd>
+          <dt>Partner</dt><dd>Red Thread Innovations</dd>
+          <dt>Prototype</dt><dd><a href="https://www.figma.com/proto/vWawuFOo87VLMyRqap9Rsk/Capstone-Project_Unibank?node-id=345-5124&amp;p=f&amp;m=draw&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=345%3A5124&amp;show-proto-sidebar=1&amp;page-id=345%3A4767&amp;t=XhcHVyZTXYjHJBr1-1" target="_blank" rel="noopener">View the Figma prototype →</a></dd>
+        </dl>
+      </header>
+
+      <figure class="fig rv">
+        <img class="shot" src="images/unibank/1.jpg" alt="UniBank app screens" loading="lazy">
+      </figure>
+
+      <div class="cs-body">
+        <section class="block">
+          <span class="label">the gap</span>
+          <h2 class="subhead">Banking still assumes one kind of family</h2>
+          <p>Traditional banking assumes one household shape: two married parents, shared everything, and steady income. Plenty of families do not look like that. Single parents, same-sex and blended families, cohabiting partners, and grandparent-led homes all fall outside the template, and their money does not behave the way standard products expect.</p>
+          <p>We set out to design for those households. Speaking to both sides of the relationship, the families themselves and the advisors who serve them, we mapped where the current experience breaks down.</p>
+
+          <div class="pain-grid rv">
+            <div class="pain-col">
+              <h4>Families</h4>
+              <div class="pain"><b>Income that does not sit still</b><p>When income varies or arrives unevenly across a household, budgeting tools built around a single steady paycheque break immediately.</p></div>
+              <div class="pain"><b>Splitting without a system</b><p>Shared costs rarely divide down the middle. Without a framework, households calculate splits by hand, chase transfers, and track who paid what in spreadsheets.</p></div>
+              <div class="pain"><b>Products built for someone else</b><p>Mortgages, planning tools, and paperwork assume a married two-parent structure, leaving families to work around gaps the product never anticipated.</p></div>
+              <div class="pain"><b>Scattered across institutions</b><p>Money lives in different accounts at different banks, with no single view of what the household actually has.</p></div>
+            </div>
+            <div class="pain-col">
+              <h4>Institutions</h4>
+              <div class="pain"><b>Context built by hand</b><p>Advisors spend the opening of every conversation reconstructing how a household is structured before any advice can begin.</p></div>
+              <div class="pain"><b>One-size-fits-all offerings</b><p>Generic products convert poorly with households they were never designed around.</p></div>
+              <div class="pain"><b>A segment left on the table</b><p>Non-traditional families are a large and growing group, and most institutions have no clear approach for them.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <span class="label">the approach</span>
+          <h2 class="subhead">One system, built to adapt</h2>
+          <p>Two key improvements we wanted to make:</p>
+          <ol class="steps">
+            <li>Make the product adapt to the household, so families stop doing manual work the bank should be doing for them.</li>
+            <li>Give advisors the context and tools to serve those households well, so the human side of banking scales.</li>
+          </ol>
+          <p>We built the solution on three guiding principles:</p>
+          <dl class="feats">
+            <dt>Adaptive by default</dt>
+            <dd>The product shapes itself around the household instead of asking the household to fit the product.</dd>
+            <dt>Clarity in shared money</dt>
+            <dd>When money is shared, everyone should see the same clear picture of who owes what, and when.</dd>
+            <dt>AI with a human beside it</dt>
+            <dd>Automation handles insight and admin, while a real advisor stays within reach for the decisions that matter.</dd>
+          </dl>
+          <p>That led us to a two-sided system: a consumer app that builds itself around each family&#8217;s profile, and an advisor platform that gives institutions the same picture.</p>
+
+          <h3 class="sub2">The family journey</h3>
+          <div class="flow rv">
+            <div class="flow-key">
+              <span><i class="k-now"></i>Today</span>
+              <span><i class="k-new"></i>With UniBank</span>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>01</i>Onboard</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Fill out a standard application form</li><li>Receive the same product regardless of household</li></ul></div>
+                <div class="fbox new"><ul><li>Voice conversation with the AI assistant</li><li>Household profile built from plain-language questions</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>02</i>Manage</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Check multiple bank apps separately</li><li>Assemble the full picture manually</li></ul></div>
+                <div class="fbox new"><ul><li>Accounts linked across banks in one view</li><li>Dashboard generated around the family&#8217;s own priorities</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>03</i>Share costs</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Calculate splits by hand</li><li>Chase transfers between members</li><li>Track payments in a spreadsheet</li></ul></div>
+                <div class="fbox new"><ul><li>Income-aware split suggestions</li><li>Upcoming fixed payments broken down</li><li>Paid and unpaid status tracked automatically</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>04</i>Plan</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Search for generic advice</li><li>Work around products built for a standard household</li></ul></div>
+                <div class="fbox new"><ul><li>Perks, rates, and offers tailored to the household</li><li>Guidance available in-app in plain language</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>05</i>Get help</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Book an appointment</li><li>Explain the household situation from scratch</li></ul></div>
+                <div class="fbox new"><ul><li>Community Bridge connects to a specialist advisor</li><li>Advisor already has the household context</li></ul></div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="sub2">The advisor journey</h3>
+          <div class="flow rv">
+            <div class="flow-key">
+              <span><i class="k-now"></i>Today</span>
+              <span><i class="k-new"></i>With UniBank</span>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>01</i>Intake</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Gather household details manually across calls and forms</li></ul></div>
+                <div class="fbox new"><ul><li>Household structure, income patterns, and shared-expense dynamics arrive already mapped</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>02</i>Assess</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Interpret a non-standard situation with tools built for standard ones</li></ul></div>
+                <div class="fbox new"><ul><li>AI-powered insights surface what matters for this specific household</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>03</i>Offer</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Recommend from a generic product set</li></ul></div>
+                <div class="fbox new"><ul><li>Shape personalized offerings from real household data</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>04</i>Document</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Assemble paperwork by hand for arrangements templates do not cover</li></ul></div>
+                <div class="fbox new"><ul><li>Auto-generate cost-sharing breakdowns and the legal documents these arrangements need</li></ul></div>
+              </div>
+            </div>
+            <div class="jrow">
+              <div class="jstage"><i>05</i>Follow up</div>
+              <div class="jcards">
+                <div class="fbox now"><ul><li>Maintain the relationship through manual effort</li></ul></div>
+                <div class="fbox new"><ul><li>Community Bridge routes families whose needs fit the advisor&#8217;s expertise</li></ul></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <span class="label">the interface</span>
+          <h2 class="subhead">From structure to surface</h2>
+          <p>Research, ideation, and direction were shared across the team. Within that, I led the initial user flows, mapping how both families and advisors move through the two products, and I owned the consumer app&#8217;s UI, from the visual language through to the high-fidelity screens. Working across both the flows and the interface let me keep the experience consistent from structure to surface.</p>
+          <p>We moved quickly from low-fidelity wireframes into high-fidelity design. The design system stayed lightweight, enough to hold type, navigation, and shared components steady across both products, so what the project really shows is the final wireframes and the UI built from them.</p>
+
+          <h3 class="sub2">Walkthrough of all features</h3>
+          <figure class="fig rv">
+            <video class="shot" controls preload="metadata" playsinline>
+              <source src="images/unibank/video.mp4" type="video/mp4">
+              Your browser cannot play this video. <a href="images/unibank/video.mp4">Download the walkthrough</a>.
+            </video>
+          </figure>
+
+          <div class="grouphead">Customer side: the banking app</div>
+
+          <h3 class="sub2">Conversational onboarding</h3>
+          <figure class="fig rv">
+            <img class="shot" src="images/unibank/2.jpg" alt="Conversational onboarding screens" loading="lazy">
+          </figure>
+          <p>Setup opens with a voice-based AI assistant rather than a static form. It asks plain-language questions about who is in the household, how income arrives, and how expenses are shared, building a full picture whatever shape the family takes.</p>
+
+          <h3 class="sub2">The adaptive dashboard</h3>
+          <figure class="fig rv">
+            <img class="shot" src="images/unibank/3.jpg" alt="Adaptive dashboard screens" loading="lazy">
+          </figure>
+          <p>From that profile, the app generates a home screen built around the family&#8217;s real priorities. A single parent saving for a child sees something different from a couple managing an uneven mortgage.</p>
+          <p>Shared expenses sit at the center of it. The app reads income variation and suggests balanced ways to divide shared costs, breaks down each upcoming fixed payment, and tracks whether each person has paid their share, so the split, the schedule, and the current status all live in one view and nobody is left chasing money.</p>
+
+          <h3 class="sub2">Community Bridge and the AI Advisor</h3>
+          <figure class="fig rv">
+            <img class="shot" src="images/unibank/4.jpg" alt="Community Bridge and AI Advisor screens" loading="lazy">
+          </figure>
+          <p>Community Bridge lowers the barrier to getting help. Instead of hunting for someone who will understand their situation, families are connected directly to advisors who specialize in non-traditional family finance, and the same bridge appears on the advisor side, matching them with the households whose needs fit their expertise.</p>
+          <p>Alongside it, the AI Advisor handles the everyday questions. It explains financial concepts in plain language and helps families think through planning, so the information they need is available without booking anything. It is built to inform rather than to decide: it lays out options and what each one means, and the choice stays with the family. Anything carrying real weight is handed to a person through Community Bridge.</p>
+
+          <div class="grouphead">Institution side: the advisor software</div>
+
+          <dl class="feats">
+            <dt>AI-powered customer insights</dt>
+            <dd>Helps advisors understand varied, unique household structures quickly, so they can build solutions that fit the family in front of them.</dd>
+            <dt>Personalized financial offerings</dt>
+            <dd>Data-driven insight lets banks design customized programs and generate the legal documents non-traditional families often need.</dd>
+            <dt>Stronger client relationships</dt>
+            <dd>By closing gaps traditional banking leaves open, institutions build trust and engagement with a segment they usually miss.</dd>
+          </dl>
+          <div class="img-row three rv">
+            <img class="shot" src="images/unibank/6.jpg" alt="Advisor software screen" loading="lazy">
+            <img class="shot" src="images/unibank/7.jpg" alt="Advisor software screen" loading="lazy">
+            <img class="shot" src="images/unibank/8.jpg" alt="Advisor software screen" loading="lazy">
+          </div>
+
+          <div class="grouphead">Process</div>
+
+          <figure class="fig rv">
+            <img class="shot" src="images/unibank/5.jpg" alt="Wireframes, mid-fidelity through high-fidelity" loading="lazy">
+          </figure>
+          <p>The full set of wireframes, mid-fidelity through high-fidelity.</p>
+          <p>The design went through two rounds of usability testing on <a href="https://www.usertesting.com" target="_blank" rel="noopener">UserTesting.com</a> plus an in-class design review. Feedback on both the concept and the application UI was positive.</p>
+        </section>
+
+        <a class="backlink sweep" href="#work" data-link>← Back to selected work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ NOTE ============================ -->
+  <section class="view" id="note" aria-label="NOTE — The Scent Lab case study" style="--g1:#8ABF4D;--g2:#FF8A50;--g3:#E86FA8">
+    <div class="wrap">
+      <a class="backlink sweep" href="#work" data-link>← Selected work</a>
+      <header class="cs-hero">
+        <span class="label">Case study · Branding / Packaging</span>
+        <h1>NOTE — The Scent Lab</h1>
+        <p class="lead">A rebrand rooted in place. A complete visual identity and packaging system for a Vietnamese fragrance house, turning the country&#8217;s cities and seasons into a language of scent and color.</p>
+        <dl class="meta">
+          <dt>Role</dt><dd><b>Graphic Designer, Brand Designer</b></dd>
+          <dt>Length</dt><dd>13 weeks</dd>
+          <dt>Tools</dt><dd>Adobe Illustrator, Adobe Photoshop</dd>
+          <dt>Scope</dt><dd>Brand strategy, logo and identity, packaging, and collateral</dd>
+        </dl>
+      </header>
+
+      <figure class="fig rv">
+        <img class="shot" src="images/note/1.jpg" alt="NOTE — The Scent Lab" loading="lazy">
+      </figure>
+
+      <div class="cs-body">
+        <section class="block">
+          <span class="label">the idea</span>
+          <h2 class="subhead">Scent as a sense of place</h2>
+          <p>The concept is inspired by the richness and vibrant beauty of Vietnam&#8217;s landscapes, the birthplace of NOTE. Drawing on a country blessed by nature and steeped in cultural and historical heritage, the rebrand builds its imagery, symbols, and product names around famous landmarks that reflect the character of each region.</p>
+          <p>That decision, rooting every product in a specific place rather than an abstract mood, drove everything downstream: the naming, the color system, the imagery, and the way the collections are grouped. It also gave the brand a story that is specific to NOTE and hard to copy, which is exactly what a rebrand should protect.</p>
+        </section>
+
+        <section class="block">
+          <span class="label">identity</span>
+          <h2 class="subhead">A mark that hides inside the O</h2>
+          <p>The wordmark redraws NOTE in a custom high-contrast serif that reads as refined without feeling cold. The brand mark lives inside the letter O and folds three meanings into one shape:</p>
+          <ul class="rich">
+            <li><b>Scent</b> — a rising curved line, the trace of fragrance in the air.</li>
+            <li><b>Spark</b> — a four-pointed star, the moment a candle is lit and a nod to the brand&#8217;s science-and-art spirit.</li>
+            <li><b>Candle</b> — the spark set inside a circle, the product itself.</li>
+          </ul>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/logo-explain.jpg" alt="NOTE logo construction: scent, spark, and candle" loading="lazy">
+          </figure>
+        </section>
+
+        <section class="block">
+          <span class="label">the collections</span>
+          <h2 class="subhead">Named in two languages, rooted in place</h2>
+          <p>The rebrand covers three lines, each named in both Vietnamese and English so the brand reads at home and abroad.</p>
+          <dl class="feats">
+            <dt>“B&#7855;c Trung Nam” (North-Central-South) candle set</dt>
+            <dd>Three candles for three cities: Hà N&#7897;i Morning (Hà N&#7897;i S&#7899;m), Streets of H&#7897;i An (H&#7897;i An Ph&#7889;), and Sài Gòn Night (Sài Gòn Đêm), a north-to-south journey in three scents.</dd>
+            <dt>Đà L&#7841;t Sunset (Đà L&#7841;t Hoàng Hôn) diffuser</dt>
+            <dd>A single reed diffuser for the highland town, carrying the place-based idea into a second product type.</dd>
+            <dt>“B&#7889;n Mùa” (Four Seasons) perfume set</dt>
+            <dd>Four perfumes, one per season, drawing on the country as a whole rather than a single city.</dd>
+          </dl>
+        </section>
+
+        <section class="block">
+          <span class="label">the design</span>
+          <h2 class="subhead">A gradient for every place and time</h2>
+          <p>Color is the core of the system. Each product gets a gradient that translates its place and time of day into a mood, so the palette is doing the same job as the fragrance:</p>
+          <ul class="rich">
+            <li><b>Hà N&#7897;i Morning</b> — fresh greens and bright yellows for early light. Notes of magnolia, lemon, and ginger.</li>
+            <li><b>Streets of H&#7897;i An</b> — warm oranges and golds for the old town. Notes of jasmine, coconut, and green tea.</li>
+            <li><b>Sài Gòn Night</b> — deep blues and purples for the city after dark. Notes of lavender, orange, and vanilla.</li>
+            <li><b>Đà L&#7841;t Sunset</b> — soft pinks and purples for the highland dusk. Notes of rose, pine, and pomelo.</li>
+          </ul>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/hanoi-candle.jpg" alt="Hà N&#7897;i Morning candle" loading="lazy">
+          </figure>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/hoian-candle.jpg" alt="Streets of H&#7897;i An candle" loading="lazy">
+          </figure>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/saigon-candle.jpg" alt="Sài Gòn Night candle" loading="lazy">
+          </figure>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/dalat-diffuser.jpg" alt="Đà L&#7841;t Sunset diffuser" loading="lazy">
+          </figure>
+          <p>For the perfumes, the same gradient logic maps onto the four seasons, from spring&#8217;s greens and pinks through to winter&#8217;s cool blues. Two recurring graphic devices hold the system together: simplified line-art of each city&#8217;s landmark (the pavilion at Hà N&#7897;i&#8217;s Temple of Literature, the covered bridge in H&#7897;i An, and the tower on the Sài Gòn skyline), and flower motifs rendered in the same gradients, drawn from the ingredients in each scent.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/fourseason-perfume.jpg" alt="B&#7889;n Mùa four seasons perfume set" loading="lazy">
+          </figure>
+        </section>
+
+        <section class="block">
+          <span class="label">packaging</span>
+          <h2 class="subhead">Color carries the box</h2>
+          <p>On the packaging, the gradient fills the label, the landmark line-art sits as a quiet outline, and the type stays clean so color carries the identity. Consistent details keep the range coherent: the NOTE mark, the product type (“N&#7871;n th&#417;m,” scented candle), the weight, and the scent notes.</p>
+          <p>The candle set ships in a pop-up box holding the three candle boxes and a thank-you card, so opening it is part of the experience rather than an afterthought.</p>
+          <p>The perfume set follows the same system in a four-bottle B&#7889;n Mùa pack, and the Đà L&#7841;t diffuser carries the concept into a boxed reed format.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/candle-set.jpg" alt="B&#7855;c Trung Nam candle set packaging" loading="lazy">
+          </figure>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/perfume-set.jpg" alt="Perfume set packaging" loading="lazy">
+          </figure>
+        </section>
+
+        <section class="block">
+          <span class="label">collateral</span>
+          <h2 class="subhead">One system across every touchpoint</h2>
+          <p>To show the identity working as a brand rather than three labels, I extended it across a range of touchpoints: a 2024 product catalogue, thank-you cards and envelopes, digital billboards and lightbox displays, and roll-up banners for a launch. The same gradients, motifs, and type carry through all of them, which is where a system like this earns its keep.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/note/branding.jpg" alt="Catalogue, cards, billboards, and banners" loading="lazy">
+          </figure>
+        </section>
+
+        <section class="block">
+          <span class="label">reflection</span>
+          <h2 class="subhead">Owning a whole system, solo</h2>
+          <p>The most valuable part of this project was executing my artistic vision across an entire brand system, from the first idea to the last piece of collateral. Translating something as intangible as scent into a consistent visual language, and holding that language steady across a logo, four gradients, a dozen packages, and a room full of print, taught me more about systems than any single artifact could.</p>
+        </section>
+
+        <a class="backlink sweep" href="#work" data-link>← Back to selected work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= MOON DRAWER ========================= -->
+  <section class="view" id="moondrawer" aria-label="The Moon Drawer case study" style="--g1:#F2A65A;--g2:#B77FD0;--g3:#7E63C9">
+    <div class="wrap">
+      <a class="backlink sweep" href="#work" data-link>← Selected work</a>
+      <header class="cs-hero">
+        <span class="label">Case study · Narrative design / AR</span>
+        <h1>The Moon Drawer</h1>
+        <p class="lead">Narrative design and AR storytelling for CyberTrophy. A 100-episode location-based narrative built into an existing AR game platform, where collecting a trophy becomes a moment in a story rather than a point on a scoreboard.</p>
+        <dl class="meta">
+          <dt>Role</dt>
+          <dd><b>Lead visual designer</b><span class="note">Research, ideation, and direction were shared across a team of three. I led creative direction and character and trophy concept development.</span></dd>
+          <dt>Length</dt><dd>25 weeks</dd>
+          <dt>Tools</dt><dd>Adobe Photoshop, Tripo 3D, Gemini, ChatGPT, Claude</dd>
+          <dt>Scope</dt><dd>Creative direction, narrative structure, character design, trophy concept development, AI-assisted visual production</dd>
+          <dt>Partner</dt><dd>CyberTrophy</dd>
+          <dt>Live in</dt>
+          <dd>
+            <a href="https://apps.apple.com/ca/app/cybertrophy/id1639730053" target="_blank" rel="noopener">CyberTrophy on the App Store →</a><br>
+            <a href="https://play.google.com/store/apps/details?id=social.continuum.artravel&amp;pcampaignid=web_share" target="_blank" rel="noopener">CyberTrophy on Google Play →</a>
+          </dd>
+        </dl>
+      </header>
+
+      <figure class="fig rv">
+        <img class="shot" src="images/moondrawer/2.jpg" alt="The Moon Drawer key art" loading="lazy">
+      </figure>
+
+      <div class="cs-body">
+        <section class="block">
+          <span class="label">01 — the opportunity</span>
+          <h2 class="subhead">A collection loop with a ceiling</h2>
+          <p>CyberTrophy is a Toronto-based AR app where players move through real-world locations to collect 3D trophies. The platform had five stories in its library, all built on the same underlying logic: go somewhere, complete an objective, earn a reward, repeat.</p>
+          <p>The mechanics work. Movement-based games are effective at getting people outside and engaged with their surroundings. But the loop has a ceiling. Once the novelty of collecting wears off, there&#8217;s nothing pulling a player back. There is no reason to care about what they&#8217;ve collected beyond the fact that they collected it.</p>
+          <p>That gap was the opportunity. A location-based game already has something most digital experiences don&#8217;t: physical presence. The player is somewhere real, moving through actual space. If a story could attach itself to that movement, if arriving somewhere unlocked a moment rather than just a checkpoint, the collection loop stops being a mechanic and starts being an experience.</p>
+          <p>The brief we set for ourselves: build a complete narrative layer inside CyberTrophy&#8217;s existing infrastructure that makes trophies feel like something worth keeping.</p>
+        </section>
+
+        <section class="block">
+          <span class="label">02 — the approach</span>
+          <h2 class="subhead">A story you can play while walking</h2>
+          <p>The story came first. The narrative direction had to answer one question: what kind of story fits a game you play while walking? That gave us three design considerations:</p>
+          <ul class="rich">
+            <li>Episodes needed to be short, readable in the moment, mid-walk.</li>
+            <li>The tone needed to be gentle and accessible, not demanding emotional heavy lifting from someone opening the app casually.</li>
+            <li>The story had to work without asking the player to type anything.</li>
+          </ul>
+          <p>The world that emerged: a fading cottage of memories. The player wakes with no clear sense of self. Inside, a mysterious drawer, the Moon Drawer, reveals objects from their past. Each object becomes a trophy representing a memory, a feeling, or a piece of identity. As objects accumulate on the Memory Shelf, the world regains warmth and color. But time and pressure begin to distort things. Memories glitch. Doubt creeps in.</p>
+          <p><b>Core idea:</b> remembering yourself in a world that tries to make you forget.</p>
+
+          <h3 class="sub2">Narrative structure</h3>
+          <p>100 episodes across 10 chapters, each built around a distinct emotional theme: comfort, intuition, pressure, slowing down, memory, habit.</p>
+          <p>Pacing was deliberate. The first thirty episodes stay in gentle territory: favourite places, comforting memories, familiar foods, childhood locations, objects kept but rarely used. The story eases players in before it asks anything harder. Each episode introduces one symbolic object tied to that moment&#8217;s emotional register. The trophy is what the player collects, the memory is what they carry.</p>
+          <p>Rather than a fictional protagonist, the player is the main character. Their movement, their memories, their interpretations are what the story runs on. Meaning emerges from what they bring rather than what they&#8217;re told.</p>
+
+          <h3 class="sub2">Character design</h3>
+          <p>Two characters carry the story&#8217;s central tension.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/moondrawer/3.png" alt="The Fox and the Clockmaker" loading="lazy">
+          </figure>
+          <div class="chars rv">
+            <div class="char">
+              <h4>The Fox</h4>
+              <span class="role">Intuition · emotional truth · safety</span>
+              <dl>
+                <dt>Form</dt><dd>A chibi upright figure: bright orange fur, white shirt, blue suspenders, light bow tie.</dd>
+                <dt>Presence</dt><dd>Soft and calm, never forcing the player anywhere.</dd>
+                <dt>Iteration</dt><dd>Early versions were more realistic and read as ambiguous rather than warm. The final form had to be immediately legible as gentle, even at small scale in an AR interface.</dd>
+              </dl>
+            </div>
+            <div class="char">
+              <h4>The Clockmaker</h4>
+              <span class="role">Pressure · judgment · productivity anxiety</span>
+              <dl>
+                <dt>Form</dt><dd>A shadowy figure with a flat square clock for a head.</dd>
+                <dt>Why that shape</dt><dd>Round clocks read as friendly and grandfather clocks read as whimsical. A flat rectangular face reads as mechanical and slightly wrong, which is exactly what the character needed.</dd>
+                <dt>Arc</dt><dd>Softens across the story, mirroring the player&#8217;s own movement from external validation toward self-understanding.</dd>
+              </dl>
+            </div>
+          </div>
+          <p>Together they externalize a tension most people recognize without needing it explained.</p>
+
+          <h3 class="sub2">Visual direction</h3>
+          <p>The aesthetic was set early through a moodboard: cottage-core, soft, nostalgic, whimsical. Warm and unhurried. All-ages-friendly without being childish.</p>
+          <p>Characters and symbolic objects were sketched digitally in Adobe Photoshop before any other production began. Each trophy was worked out from an emotional brief rather than a visual one: what physical form does a memory take, what shape does slowing down make.</p>
+
+          <h3 class="sub2">Production approach</h3>
+          <p>Producing 100 unique cover art images required a workflow decision.</p>
+          <p>The first approach was fully hand-illustrated. Following a conversation with CyberTrophy about audience reception of AI-generated art, the team explored whether the visual set could be produced entirely through traditional digital illustration. The team worked with this approach for a period, but the volume of output required made it unworkable at scale.</p>
+          <p>The move to AI-assisted production followed CyberTrophy&#8217;s existing workflow, since the company already used generative tools in its visual pipeline. That precedent reframed the question from whether to use AI to how to use it well. As production scaled, we integrated AI tools to accelerate rendering, but with strict creative control. AI served as:</p>
+          <ul class="rich">
+            <li>A refinement tool, not an author</li>
+            <li>A way to generate visual variations from finished sketches</li>
+            <li>A method for exploring symbolic ambiguity</li>
+            <li>A pipeline aligned with CyberTrophy&#8217;s 3D rendering system</li>
+          </ul>
+          <p>The production ran on a repeating six-stage cycle, with the full loop running three times before the visual system stabilized.</p>
+          <div class="cycle rv">
+            <div class="cyc"><span>01</span><b>Ideation</b><p>Developing the concept based on the partner brief.</p></div>
+            <div class="cyc"><span>02</span><b>Make</b><p>Sketching, writing, prompting, generating.</p></div>
+            <div class="cyc"><span>03</span><b>Document</b><p>Logging prompts, outputs, errors, variations.</p></div>
+            <div class="cyc"><span>04</span><b>Reflect</b><p>Analyzing ambiguity and authorial intent.</p></div>
+            <div class="cyc"><span>05</span><b>Refine</b><p>Adjusting prompts, curating outputs.</p></div>
+            <div class="cyc"><span>06</span><b>Apply</b><p>Integrating visuals and narrative into the app.</p></div>
+          </div>
+          <p class="cycle-note">Three full loops before the visual system stabilized.</p>
+        </section>
+
+        <section class="block">
+          <span class="label">03 — the product</span>
+          <h2 class="subhead">Live as CyberTrophy&#8217;s sixth story</h2>
+          <p>What was built:</p>
+          <ul class="rich">
+            <li>A complete 100-episode narrative across 10 chapters</li>
+            <li>100 original symbolic trophy designs, each tied to a specific episode and emotional theme</li>
+            <li>100 unique episode cover art images</li>
+            <li>Two original characters with full visual and narrative development</li>
+            <li>Full integration into CyberTrophy&#8217;s existing AR platform</li>
+          </ul>
+          <figure class="fig rv">
+            <img class="shot" src="images/moondrawer/1.jpg" alt="The Moon Drawer in CyberTrophy" loading="lazy">
+          </figure>
+          <p><b>How it works in the app:</b> The player opens the Moon Drawer, a mechanic that signals willingness to engage, and receives an episode. The trophy appears in AR, anchored to wherever they physically are. Once collected, it goes on the Memory Shelf, a space that accumulates and shifts as the story progresses. No text input required. The reflection happens through interpretation.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/moondrawer/4.png" alt="Trophies and the Memory Shelf" loading="lazy">
+          </figure>
+          <p>The trophies don&#8217;t just reward movement. They mean something.</p>
+          <p><b>What it demonstrates:</b> Narrative depth and game mechanics aren&#8217;t in tension. A location-based platform can carry a story that asks something of its players, not a quest to complete, but a memory to sit with.</p>
+          <p>The 3D models were rendered by the CyberTrophy development team from the original 2D designs, completing the translation from sketch to AR object.</p>
+        </section>
+
+        <section class="block">
+          <span class="label">04 — reflection</span>
+          <h2 class="subhead">Reflection as an interaction mode</h2>
+          <p>The Moon Drawer shows that reflection can be an interaction mode in AR gaming, not an add-on. By combining narrative identity principles, symbolic objects, and AI-assisted visual variation, we built a movement-based story that gives players a reason to pause and interpret their own experience, all within CyberTrophy&#8217;s existing platform, without new infrastructure.</p>
+          <p>The AI process taught me something I didn&#8217;t expect going in. Used with clear authorial control, generative tools expanded both what I could explore creatively and how much I could produce. The judgment about what fits a story world is still design work. It just looks different than drawing.</p>
+        </section>
+
+        <a class="backlink sweep" href="#work" data-link>← Back to selected work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= NO SWIMMING ========================= -->
+  <section class="view" id="noswimming" aria-label="No Swimming project" style="--g1:#4EC3DE;--g2:#8FE0D2;--g3:#FFD79A">
+    <div class="wrap">
+      <a class="backlink sweep" href="#work" data-link>← Selected work</a>
+      <header class="cs-hero">
+        <span class="label">School project · Fabrication</span>
+        <h1>No Swimming</h1>
+        <p class="lead">A swimming pool in a box, built to learn six machines I had never touched before.</p>
+        <dl class="meta">
+          <dt>Scope</dt><dd>Concept, layout planning, fabrication</dd>
+          <dt>Tools</dt><dd>Adobe Illustrator, Rhino, RhinoCAM, Bambu Studio</dd>
+          <dt>Made with</dt><dd>Plywood, foam, aluminum, acrylic, PLA</dd>
+        </dl>
+      </header>
+
+      <figure class="fig rv">
+        <img class="shot" src="images/noswimming/0.jpg" alt="No Swimming, finished piece" loading="lazy">
+      </figure>
+
+      <div class="cs-body">
+        <section class="block">
+          <span class="label">the brief</span>
+          <h2 class="subhead">Six processes, one object</h2>
+          <p>The assignment was to build one object using a set list of materials and machines. Wood, metal, foam, a 3D print, something laser cut, something UV printed. Six processes I had never used before, and a real risk of ending up with six unrelated things glued together.</p>
+          <p>So I started from the materials instead of the concept. I looked for a subject where each material would already have an obvious job, and a swimming pool covered most of them. The wooden box is the pool, the metal is the ladder, and the foam mills easily into a wavy water surface. The acrylic became the smaller things you&#8217;d find at a pool, a life ring and a sign.</p>
+          <p>All together, I wanted to make something fun and whimsical: a whale in a swimming pool!</p>
+        </section>
+
+        <section class="block">
+          <span class="label">planning</span>
+          <h2 class="subhead">Laying it out flat first</h2>
+          <div class="img-row rv">
+            <img class="shot" src="images/noswimming/2.jpeg" alt="Layout planning" loading="lazy">
+            <img class="shot" src="images/noswimming/3.jpeg" alt="Layout planning" loading="lazy">
+          </div>
+          <figure class="fig rv">
+            <img class="shot" src="images/noswimming/5.png" alt="Flat layout plan in Illustrator" loading="lazy">
+          </figure>
+          <p>Before I touched a machine, I laid out every side of the box at real size in Adobe Illustrator. I could check the proportions, settle the colours early, and pull a full material list straight off the artboard before cutting anything. A lot of the problems I avoided later came from doing that first.</p>
+        </section>
+
+        <section class="block">
+          <span class="label">how it came together</span>
+          <h2 class="subhead">Crafting!</h2>
+          <p>Making came second, and that was six unfamiliar machines in a row, testing on offcuts and adjusting as each material behaved differently from the drawing.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/noswimming/4.jpeg" alt="Building the box" loading="lazy">
+          </figure>
+          <p>The box came first. I cut the plywood panels on the table saw, then clamped and glued them up and sanded the joints back before any colour went on. The ladder followed: cutting the aluminum to length and bending it by hand, which is where holding the spare pieces up against the box earned its keep.</p>
+          <figure class="fig rv">
+            <img class="shot" src="images/noswimming/6.png" alt="Water surface modelled and milled" loading="lazy">
+          </figure>
+          <p>The water surface started as a model in Rhino. I set the toolpaths in RhinoCAM, milled it out of foam on the MultiCam, and finished it with acrylic paint. The smaller pool pieces were laser cut from acrylic, and the life ring went through the Ricoh flatbed with a white underbase and double-sided registration so it reads the same from either side of the box. The whale tail was a 3D print, rescaled and prepped in Bambu Studio.</p>
+          <p>Finishing pulled it together: paint, sanding, and final assembly, with the milled foam dropped onto its blocks last so the water sits level.</p>
+          <div class="img-row rv">
+            <img class="shot" src="images/noswimming/7.jpeg" alt="Finished detail" loading="lazy">
+            <img class="shot" src="images/noswimming/8.jpeg" alt="Finished detail" loading="lazy">
+          </div>
+          <figure class="fig rv fig-portrait">
+            <img class="shot" src="images/noswimming/1.jpeg" alt="Finished piece" loading="lazy">
+          </figure>
+        </section>
+
+        <a class="backlink sweep" href="#work" data-link>← Back to selected work</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  (function(){
+    var views = ['home','unibank','note','moondrawer','noswimming'];
+    var titles = {
+      home:'Quyen — Graphic + UX Designer',
+      unibank:'UniBank — Quyen',
+      note:'NOTE, The Scent Lab — Quyen',
+      moondrawer:'The Moon Drawer — Quyen',
+      noswimming:'No Swimming — Quyen'
+    };
+    var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:.08}) : null;
+    function observeIn(root){
+      if(!io){ root.querySelectorAll('.rv').forEach(function(n){ n.classList.add('in'); }); return; }
+      root.querySelectorAll('.rv').forEach(function(n){ n.classList.remove('in'); io.observe(n); });
+    }
+    function show(id){
+      if(views.indexOf(id) === -1) id = 'home';
+      views.forEach(function(v){ document.getElementById(v).classList.toggle('is-active', v === id); });
+      document.title = titles[id];
+      observeIn(document.getElementById(id));
+    }
+    function route(){
+      var h = (location.hash || '').replace('#','');
+      if(h === 'work' || h === 'contact'){
+        show('home');
+        requestAnimationFrame(function(){ var el = document.getElementById(h); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); });
+        return;
+      }
+      show(h || 'home');
+      window.scrollTo(0,0);
+    }
+    document.querySelectorAll('a[data-link]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var href = a.getAttribute('href') || '';
+        if(href.charAt(0) !== '#') return;
+        e.preventDefault();
+        if(location.hash === href){ route(); } else { location.hash = href; }
+      });
+    });
+    window.addEventListener('hashchange', route);
+    route();
+  })();
+</script>
+</body>
+</html>
