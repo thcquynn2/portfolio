@@ -245,19 +245,18 @@
   .img-row{display:grid;gap:.9rem;grid-template-columns:repeat(2,1fr);margin:1.6rem 0;align-items:start}
   /* NOTE: launch posters under the hero, tall standee beside two stacked posters */
   .poster-grid{width:min(100%,clamp(420px,66vh,var(--col)));margin:.9rem auto 0;display:grid;grid-template-columns:1.17fr 1fr;gap:.9rem;align-items:start}
-  .poster-grid .p-tall{grid-column:1;grid-row:1 / span 2;align-self:stretch;position:relative;overflow:hidden;border-radius:6px;background:var(--paper-2)}
-  .poster-grid .p-tall img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:0}
+  .poster-grid .p-tall{grid-column:1;grid-row:1 / span 2}
   .poster-grid .p-small{grid-column:2}
-  .poster-grid .p-small img{display:block;width:100%}
+  .poster-grid img{display:block;width:100%;height:auto}
   @media(max-width:560px){.poster-grid{gap:.55rem}}
   /* NOTE appendix */
   .appendix{padding-top:clamp(3rem,6vw,4.4rem)}
   .appendix .subhead + .grouphead{margin-top:1.8rem}
   .dieline{background:#fff;border:1px solid var(--line);border-radius:6px;padding:clamp(.8rem,3vw,1.6rem);margin:1.1rem 0}
   .dieline img{display:block;width:auto;max-width:100%;max-height:min(70vh,640px);margin:0 auto;border-radius:0}
-  .img-row.pair{display:flex;gap:.9rem;align-items:stretch}
+  .img-row.pair{display:flex;gap:.9rem;align-items:flex-start}
   .img-row.pair figure{flex:var(--r,1) 1 0;min-width:0;margin:0}
-  .img-row.pair img{display:block;width:100%;height:100%;object-fit:cover}
+  .img-row.pair img{display:block;width:100%;height:auto}
   /* NOTE: every stacked image stays inside the screen; wide ones fill the column, tall ones scale down and center */
   #note figure.fig > .shot{display:block;width:auto;max-width:100%;max-height:min(75vh,680px);margin-inline:auto}
   @media(max-width:560px){.img-row.pair{gap:.55rem}}
@@ -980,6 +979,32 @@
     });
     window.addEventListener('hashchange', route);
     route();
+  })();
+
+  /* NOTE: size the poster block and the process pair from each image's real proportions (no cropping) */
+  (function(){
+    var grid = document.querySelector('#note .poster-grid');
+    if(grid){
+      var pi = grid.querySelectorAll('img');
+      var fitPosters = function(){
+        var s = pi[0], a = pi[1], b = pi[2];
+        if(!s || !a || !b || !s.naturalWidth || !a.naturalWidth || !b.naturalWidth) return;
+        var W = grid.clientWidth; if(!W) return;
+        var g = parseFloat(getComputedStyle(grid).columnGap) || 0;
+        var rs = s.naturalHeight / s.naturalWidth;
+        var P = a.naturalHeight / a.naturalWidth + b.naturalHeight / b.naturalWidth;
+        var wr = ((W - g) * rs - g) / (rs + P), wl = W - g - wr;
+        if(wr > 0 && wl > 0) grid.style.gridTemplateColumns = wl + 'px ' + wr + 'px';
+      };
+      pi.forEach(function(i){ if(i.complete) fitPosters(); else i.addEventListener('load', fitPosters); });
+      if('ResizeObserver' in window) new ResizeObserver(fitPosters).observe(grid);
+      window.addEventListener('resize', fitPosters);
+    }
+    document.querySelectorAll('#note .img-row.pair figure').forEach(function(f){
+      var im = f.querySelector('img');
+      var setRatio = function(){ if(im.naturalWidth) f.style.setProperty('--r', (im.naturalWidth / im.naturalHeight).toFixed(4)); };
+      if(im.complete) setRatio(); else im.addEventListener('load', setRatio);
+    });
   })();
 </script>
 </body>
