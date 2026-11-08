@@ -243,6 +243,24 @@
   .grouphead{display:flex;align-items:center;gap:.7rem;font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin:2.8rem 0 1.4rem;padding-top:1.1rem;border-top:1px solid var(--line-2)}
   .grouphead::before{content:"";width:1.4rem;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--g1),var(--g2))}
   .img-row{display:grid;gap:.9rem;grid-template-columns:repeat(2,1fr);margin:1.6rem 0;align-items:start}
+  /* NOTE: launch posters under the hero, tall standee beside two stacked posters */
+  .poster-grid{width:min(100%,clamp(420px,66vh,var(--col)));margin:.9rem auto 0;display:grid;grid-template-columns:1.17fr 1fr;gap:.9rem;align-items:start}
+  .poster-grid .p-tall{grid-column:1;grid-row:1 / span 2;align-self:stretch;position:relative;overflow:hidden;border-radius:6px;background:var(--paper-2)}
+  .poster-grid .p-tall img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:0}
+  .poster-grid .p-small{grid-column:2}
+  .poster-grid .p-small img{display:block;width:100%}
+  @media(max-width:560px){.poster-grid{gap:.55rem}}
+  /* NOTE appendix */
+  .appendix{padding-top:clamp(3rem,6vw,4.4rem)}
+  .appendix .subhead + .grouphead{margin-top:1.8rem}
+  .dieline{background:#fff;border:1px solid var(--line);border-radius:6px;padding:clamp(.8rem,3vw,1.6rem);margin:1.1rem 0}
+  .dieline img{display:block;width:auto;max-width:100%;max-height:min(70vh,640px);margin:0 auto;border-radius:0}
+  .img-row.pair{display:flex;gap:.9rem;align-items:stretch}
+  .img-row.pair figure{flex:var(--r,1) 1 0;min-width:0;margin:0}
+  .img-row.pair img{display:block;width:100%;height:100%;object-fit:cover}
+  /* NOTE: every stacked image stays inside the screen; wide ones fill the column, tall ones scale down and center */
+  #note figure.fig > .shot{display:block;width:auto;max-width:100%;max-height:min(75vh,680px);margin-inline:auto}
+  @media(max-width:560px){.img-row.pair{gap:.55rem}}
   .img-row img{width:100%}
   @media(min-width:640px){.img-row.three{grid-template-columns:repeat(3,1fr)}}
   .ph-row{display:grid;gap:1rem;grid-template-columns:repeat(2,1fr)}
@@ -582,6 +600,12 @@
         <img class="shot" src="images/note/1.jpg" alt="NOTE — The Scent Lab" loading="lazy">
       </figure>
 
+      <div class="poster-grid rv">
+        <div class="p-tall"><img class="shot" src="images/note/poster-standee.png" alt="Bắc Trung Nam launch standee" loading="lazy"></div>
+        <div class="p-small"><img class="shot" src="images/note/poster-dalat.png" alt="Đà Lạt Hoàng Hôn launch poster" loading="lazy"></div>
+        <div class="p-small"><img class="shot" src="images/note/poster-hanoi.png" alt="Hà Nội Sớm launch poster" loading="lazy"></div>
+      </div>
+
       <div class="cs-body">
         <section class="block">
           <span class="label">the idea</span>
@@ -669,10 +693,31 @@
           </figure>
         </section>
 
-        <section class="block">
-          <span class="label">reflection</span>
-          <h2 class="subhead">Owning a whole system, solo</h2>
-          <p>The most valuable part of this project was executing my artistic vision across an entire brand system, from the first idea to the last piece of collateral. Translating something as intangible as scent into a consistent visual language, and holding that language steady across a logo, four gradients, a dozen packages, and a room full of print, taught me more about systems than any single artifact could.</p>
+        <section class="block appendix">
+          <span class="label">appendix</span>
+          <h2 class="subhead">From die cut to display</h2>
+
+          <div class="grouphead">Die cut of all packaging</div>
+          <figure class="fig dieline rv">
+            <img src="images/note/diecut-candles.png" alt="Die cuts for the three candle boxes" loading="lazy">
+          </figure>
+          <figure class="fig dieline rv">
+            <img src="images/note/diecut-diffuser.png" alt="Die cut for the scent diffuser set" loading="lazy">
+          </figure>
+          <figure class="fig dieline rv">
+            <img src="images/note/diecut-perfume.png" alt="Die cut for the perfume set" loading="lazy">
+          </figure>
+
+          <div class="grouphead">Process work</div>
+          <div class="img-row pair rv">
+            <figure style="--r:1.34"><img class="shot" src="images/note/process-prints.jpeg" alt="Printed die cuts laid out before assembly" loading="lazy"></figure>
+            <figure style="--r:.75"><img class="shot" src="images/note/process-boxes.jpeg" alt="Assembled boxes and bag at the test stage" loading="lazy"></figure>
+          </div>
+
+          <div class="grouphead">Final display</div>
+          <figure class="fig fit rv">
+            <img class="shot" src="images/note/display-final.jpeg" alt="NOTE booth with the full range on display" loading="lazy">
+          </figure>
         </section>
 
         <a class="backlink sweep" href="#work" data-link>← Back to selected work</a>
